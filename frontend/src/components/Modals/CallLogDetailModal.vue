@@ -401,10 +401,13 @@ watch(
   () => callLog.value?.data?.name,
   (value) => {
     if (!value) return
-    recordingError.value = false
     d.value = useDocument('CRM Call Log', value)
   },
 )
+
+watch([show, () => callLog.value?.data?.name], () => {
+  recordingError.value = false
+})
 </script>
 
 <style scoped>
