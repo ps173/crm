@@ -14,7 +14,7 @@
           v-if="isDirty"
           :label="__('Not Saved')"
           variant="subtle"
-          theme="orange"
+          theme="amber"
         />
       </div>
     </template>
@@ -97,7 +97,7 @@
                 class="!bg-surface-elevation-2"
                 variant="outline"
                 :label="__('Add Email')"
-                iconLeft="plus"
+                iconLeft="lucide-plus"
                 @click="setOpen(!open)"
               />
             </template>

@@ -26,7 +26,7 @@
             <Button
               class="form-control bg-surface-base hover:bg-surface-base"
               :label="s.value"
-              :iconRight="open ? 'chevron-up' : 'chevron-down'"
+              :iconRight="open ? 'lucide-chevron-up' : 'lucide-chevron-down'"
             />
           </template>
         </Dropdown>
@@ -56,7 +56,7 @@ let slaSection = computed(() => {
       ? 'red'
       : data.value.sla_status == 'Fulfilled'
         ? 'green'
-        : 'orange'
+        : 'amber'
   let respondedOn =
     data.value.last_responded_on || data.value.first_responded_on
   let responseTime =

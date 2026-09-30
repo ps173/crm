@@ -11,7 +11,7 @@
       <Button
         variant="solid"
         :label="__('Create')"
-        iconLeft="plus"
+        iconLeft="lucide-plus"
         @click="showLeadModal = true"
       />
     </template>
@@ -469,7 +469,7 @@ function parseRows(rows, columns = []) {
             ? 'red'
             : lead.sla_status == 'Fulfilled'
               ? 'green'
-              : 'orange'
+              : 'amber'
         if (value == 'First Response Due' || value == 'Rolling Response Due') {
           value = __(timeAgo(lead.response_by))
           tooltipText = formatDate(lead.response_by)

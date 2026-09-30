@@ -22,7 +22,7 @@
       <Button
         :label="__('Start test run')"
         variant="solid"
-        icon-left="play"
+        icon-left="lucide-play"
         :loading="running"
         :disabled="doc.document_type && !docname"
         @click="run()"
@@ -109,7 +109,7 @@ const STATUS_THEMES = {
   Skipped: 'gray',
   Waiting: 'blue',
   Failed: 'red',
-  'Partially Failed': 'orange',
+  'Partially Failed': 'amber',
 }
 
 // A wait is reported instantly by the server; the pause is here so the run reads as a sequence.

@@ -79,7 +79,7 @@
             <ListCell>
               <Badge
                 :label="row.enabled ? __('Enabled') : __('Draft')"
-                :theme="row.enabled ? 'green' : 'orange'"
+                :theme="row.enabled ? 'green' : 'amber'"
                 variant="outline"
               />
             </ListCell>
@@ -325,7 +325,7 @@ function rowOptions(automation) {
   return [
     {
       label: __('Duplicate'),
-      icon: 'copy',
+      icon: 'lucide-copy',
       onClick: () => duplicateAutomation(automation),
     },
     ...ConfirmDelete({
