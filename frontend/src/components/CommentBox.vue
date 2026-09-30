@@ -37,11 +37,9 @@
         >
           <div class="flex gap-1 items-center overflow-x-auto">
             <FileUploader
-              :upload-args="{
-                doctype: doctype,
-                docname: modelValue.name,
-                private: true,
-              }"
+              :doctype="doctype"
+              :docname="modelValue.name"
+              private
               @success="(f) => attachments.push(f)"
             >
               <template #default="{ openFileSelector }">
@@ -129,7 +127,7 @@ const users = computed(
     usersList.data?.crmUsers
       ?.filter((user) => user.enabled)
       .map((user) => ({
-        id: user.name,
+        value: user.name,
         label: user.full_name?.trim() || user.name,
       })) || [],
 )
