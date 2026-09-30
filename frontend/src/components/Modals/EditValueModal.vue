@@ -26,7 +26,7 @@
         <div class="mt-4">
           <div class="mb-1.5 text-sm text-ink-gray-5">
             {{ __('Lost Reason') }}
-            <span class="text-ink-red-5">*</span>
+            <span class="text-ink-red-4">*</span>
           </div>
           <Link
             ref="lostReasonLinkRef"
@@ -40,7 +40,7 @@
         <div class="mt-4">
           <div class="mb-1.5 text-sm text-ink-gray-5">
             {{ __('Lost Notes') }}
-            <span v-if="lostReason == 'Other'" class="text-ink-red-5">*</span>
+            <span v-if="lostReason == 'Other'" class="text-ink-red-4">*</span>
           </div>
           <FormControl
             class="form-control flex-1 truncate"
@@ -267,7 +267,7 @@ function getValueComponent(f) {
     return h(TextEditorControl, {
       variant: 'outline',
       editorClass:
-        '!prose-sm overflow-auto min-h-[80px] max-h-80 py-1.5 px-2 rounded border border-outline-gray-2 bg-surface-base hover:border-outline-gray-3 hover:shadow-sm focus:bg-surface-base focus:border-outline-gray-4 focus:ring-0 focus-visible:ring-2 focus-visible:ring-outline-gray-3 text-ink-gray-8 transition-colors',
+        '!prose-sm overflow-auto min-h-[80px] max-h-80 py-1.5 px-2 rounded-4 border border-outline-gray-2 bg-surface-base hover:border-outline-gray-3 hover:shadow-sm focus:bg-surface-base focus:border-outline-gray-4 focus:ring-0 focus-visible:ring-2 focus-visible:ring-outline-gray-3 text-ink-gray-8 transition-colors',
       fixedMenu: false,
       bubbleMenu: true,
       value: newValue.value,

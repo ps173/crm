@@ -42,7 +42,7 @@
         />
         <div
           v-if="userExistMessage || inviteeExistMessage"
-          class="text-xs text-ink-red-6 mt-1.5"
+          class="text-xs text-ink-red-5 mt-1.5"
         >
           {{ userExistMessage || inviteeExistMessage }}
         </div>
@@ -64,7 +64,7 @@
             <li
               v-for="user in pendingInvitations.data"
               :key="user.name"
-              class="flex items-center justify-between px-2 py-1 rounded-lg bg-surface-gray-2"
+              class="flex items-center justify-between px-2 py-1 rounded-6 bg-surface-gray-2"
             >
               <div class="text-base">
                 <span class="text-ink-gray-8">
