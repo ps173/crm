@@ -107,8 +107,10 @@ import { useDoctypeModal } from '@/composables/doctypeModal'
 import EmptyState from '@/components/ListViews/EmptyState.vue'
 import { usersStore } from '@/stores/users'
 import { timeAgo, formatDate, sanitizeHTML } from '@/utils'
-import { useOnboarding, useTelemetry } from 'frappe-ui/frappe'
-import { call, Dropdown, Tooltip, ListFooter } from 'frappe-ui'
+import { useOnboarding } from '@framework/ui/components/Onboarding'
+import { useTelemetry } from '@framework/ui/telemetry'
+import { call, Dropdown, Tooltip } from 'frappe-ui'
+import { ListFooter } from 'frappe-ui/experimental'
 import { ref, watch } from 'vue'
 
 const { getUser } = usersStore()
