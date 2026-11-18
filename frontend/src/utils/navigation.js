@@ -7,7 +7,7 @@ import PhoneIcon from '@/components/Icons/PhoneIcon.vue'
 import TaskIcon from '@/components/Icons/TaskIcon.vue'
 import LucideHouse from '~icons/lucide/house'
 import LucideLayoutDashboard from '~icons/lucide/layout-dashboard'
-import router from '@/router'
+import { isRouteAvailable } from '@/router'
 
 export const navigationItems = [
   { label: 'Home', icon: LucideHouse, route: 'Home', desktopOnly: true },
@@ -28,6 +28,6 @@ export const navigationItems = [
 
 export function getNavigationItems({ mobile = false } = {}) {
   return navigationItems.filter(
-    (item) => router.hasRoute(item.route) && (!mobile || !item.desktopOnly),
+    (item) => isRouteAvailable(item.route) && (!mobile || !item.desktopOnly),
   )
 }

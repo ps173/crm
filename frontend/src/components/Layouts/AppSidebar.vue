@@ -103,6 +103,8 @@
                 :label="__(link.label)"
                 :active="activeItem === link.key"
                 @click="selectItem($event, link.key)"
+                @pointerenter="link.warm?.()"
+                @focus="link.warm?.()"
               >
                 <template #prefix>
                   <Icon :icon="link.icon" class="size-4 text-ink-gray-7" />
@@ -205,6 +207,7 @@ import Icon from '@/components/Icon.vue'
 import PinIcon from '@/components/Icons/PinIcon.vue'
 import UserDropdown from '@/components/UserDropdown.vue'
 import { getNavigationItems } from '@/utils/navigation'
+import { chatKey, chatRows } from '@/utils/chat'
 import ContactsIcon from '@/components/Icons/ContactsIcon.vue'
 import DealsIcon from '@/components/Icons/DealsIcon.vue'
 import LeadsIcon from '@/components/Icons/LeadsIcon.vue'
@@ -221,6 +224,7 @@ import LucideSearch from '~icons/lucide/search'
 import { openCommandPalette } from '@/composables/useCommandPalette'
 import Settings from '@/components/Settings/Settings.vue'
 import { viewsStore } from '@/stores/views'
+import { chatsStore } from '@/stores/chats'
 import {
   unreadNotificationsCount,
   notificationsStore,
@@ -249,7 +253,7 @@ import {
   IntermediateStepModal,
 } from '@framework/ui/components/Onboarding'
 import { useTelemetry } from '@framework/ui/telemetry'
-import router from '@/router'
+import router, { isRouteAvailable } from '@/router'
 import { useStorage } from '@vueuse/core'
 import { useDemoData } from '@/composables/demoData'
 import { useCrmOnboarding } from '@/composables/onboarding'
@@ -279,6 +283,10 @@ const isDemoSite = ref(window.is_demo_site)
 
 const links = getNavigationItems({ mobile: props.mobile })
 
+const showChats = !props.mobile && isRouteAvailable('Chat')
+const { recentChats } = chatsStore()
+if (showChats && !recentChats.fetched) recentChats.fetch()
+
 const allViews = computed(() => {
   let _views = [
     {
@@ -293,6 +301,13 @@ const allViews = computed(() => {
       })),
     },
   ]
+  if (showChats) {
+    _views.push({
+      name: 'Chats',
+      opened: true,
+      views: chatRows(recentChats.data || []),
+    })
+  }
   if (getPublicViews().length) {
     _views.push({
       name: 'Public Views',
@@ -349,6 +364,7 @@ function getIcon(routeName, icon) {
 
 // A saved view's key is its name; a plain nav item's key is its route name.
 function currentRouteKey() {
+  if (route.name === 'Chat') return chatKey(route.params.session)
   return route.query.view || route.name
 }
 
@@ -377,7 +393,7 @@ function selectItem(event, key) {
 }
 
 watch(
-  () => [route.name, route.query.view],
+  () => [route.name, route.query.view, route.params.session],
   () => (activeItem.value = currentRouteKey()),
 )
 

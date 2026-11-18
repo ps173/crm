@@ -131,6 +131,16 @@ const routes = [
     component: () => import('@/pages/DataImport.vue'),
     meta: { viewKey: 'data-import' },
   },
+  // one page across chats, so the island stays mounted when the chat changes
+  {
+    path: '/chat/:session?',
+    name: 'Chat',
+    component: () => import('@/pages/Chat.vue'),
+    meta: {
+      viewKey: 'chat',
+      available: () => Boolean(window.is_flow_available),
+    },
+  },
   {
     path: '/welcome',
     name: 'Welcome',
@@ -173,13 +183,18 @@ async function landingPageRoute() {
 
   const { views } = viewsStore()
   await views.promise
-  return landingRoute(page, views.data, (name) => router.hasRoute(name))
+  return landingRoute(page, views.data, isRouteAvailable)
 }
 
 let router = createRouter({
   history: createWebHistory('/crm'),
   routes,
 })
+
+export function isRouteAvailable(name) {
+  if (!router.hasRoute(name)) return false
+  return router.resolve({ name }).meta.available?.() ?? true
+}
 
 router.beforeEach(async (to, from, next) => {
   router.previousRoute = from
@@ -216,6 +231,8 @@ router.beforeEach(async (to, from, next) => {
     else next()
   } else if (!isLoggedIn) {
     window.location.href = '/login?redirect-to=/crm'
+  } else if (to.meta.available?.() === false) {
+    next({ name: 'Home' })
   } else if (to.matched.length === 0) {
     next({ name: 'Invalid Page' })
   } else if (['Deal', 'Lead'].includes(to.name) && !to.hash) {
