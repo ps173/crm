@@ -8,6 +8,8 @@ from frappe.translate import get_messages_for_boot, get_translated_doctypes
 from frappe.utils import cint, get_system_timezone
 from frappe.utils.telemetry import capture
 
+from crm.fcrm.doctype.crm_dashboard.ask_flow import flow_available
+
 no_cache = 1
 
 
@@ -87,6 +89,7 @@ def get_boot():
 			},
 			"state_options": get_state_options(),
 			"is_insights_installed": is_insights_installed(),
+			"is_flow_available": flow_available(),
 		}
 	)
 

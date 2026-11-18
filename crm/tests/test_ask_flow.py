@@ -9,6 +9,7 @@ from crm.patches.v1_0.give_sales_users_flow_role import execute as give_sales_us
 from crm.tests.test_home import AGENT, make_user
 from crm.tests.test_user_role_profile import make_user as make_plain_user
 from crm.tests.test_user_role_profile import user_roles
+from crm.www import crm as crm_page
 
 
 class TestAskFlow(IntegrationTestCase):
@@ -67,6 +68,11 @@ class TestAskFlow(IntegrationTestCase):
 			frappe.get_doc("User", AGENT).add_roles(FLOW_ROLE)
 			frappe.set_user(AGENT)
 			self.assertTrue(ask_flow.flow_available())
+
+	def test_boot_tells_the_page_whether_flow_is_available(self):
+		for value in (True, False):
+			with patch.object(crm_page, "flow_available", return_value=value):
+				self.assertIs(crm_page.get_boot().is_flow_available, value)
 
 
 class TestFlowRoleOnJoining(IntegrationTestCase):
