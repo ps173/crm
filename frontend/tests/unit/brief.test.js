@@ -17,8 +17,6 @@ import {
   briefRoute,
   briefSummary,
   briefTitle,
-  flowSessionUrl,
-  openFlowSession,
   shortAge,
   waitedFor,
 } from '@/utils/brief'
@@ -441,10 +439,6 @@ describe('routes and actions', () => {
 })
 
 describe('Ask Flow', () => {
-  it('builds the chat address', () => {
-    expect(flowSessionUrl('abc 1')).toBe('/flow/s/abc%201')
-  })
-
   it('offers drafts only when someone is waiting', () => {
     expect(askFlowChips({ repliesWaiting: 3, now })[0]).toBe(
       'Draft replies for the 3 customers waiting on me',
@@ -458,41 +452,6 @@ describe('Ask Flow', () => {
     expect(askFlowChips({ team: true })[0]).toBe(
       'Who on my team is behind on replies?',
     )
-  })
-})
-
-describe('openFlowSession', () => {
-  it('opens the session in the Flow panel when the page has one', () => {
-    const flow = { open: vi.fn() }
-    const assign = vi.fn()
-    expect(openFlowSession('abc 1', { flow, assign })).toBe(true)
-    expect(flow.open).toHaveBeenCalledWith({ session: 'abc 1' })
-    expect(assign).not.toHaveBeenCalled()
-  })
-
-  it('opens the Flow page when the page has no panel', () => {
-    const assign = vi.fn()
-    expect(openFlowSession('abc', { flow: undefined, assign })).toBe(false)
-    expect(assign).toHaveBeenCalledWith('/flow/s/abc')
-  })
-
-  it('opens the Flow page when Frappe has a panel but no open', () => {
-    const assign = vi.fn()
-    expect(openFlowSession('abc', { flow: { toggle() {} }, assign })).toBe(
-      false,
-    )
-    expect(assign).toHaveBeenCalledWith('/flow/s/abc')
-  })
-
-  it('opens the Flow page when the panel throws', () => {
-    const assign = vi.fn()
-    const flow = {
-      open: () => {
-        throw new Error('panel failed')
-      },
-    }
-    expect(openFlowSession('abc', { flow, assign })).toBe(false)
-    expect(assign).toHaveBeenCalledWith('/flow/s/abc')
   })
 })
 

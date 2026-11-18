@@ -4,6 +4,7 @@
     :aria-label="__('Ask Flow')"
     class="flex flex-col gap-2.5 rounded-4 border border-outline-gray-2 bg-surface-elevation-2 p-3"
     @submit.prevent="send(message)"
+    @focusin="warmChatIsland"
   >
     <label for="ask-flow" class="sr-only">{{ __('Ask Flow') }}</label>
     <textarea
@@ -12,6 +13,7 @@
       rows="3"
       class="w-full resize-none border-0 bg-transparent p-1 text-p-base text-ink-gray-8 placeholder:text-ink-gray-4 focus:ring-0"
       :placeholder="placeholder"
+      :disabled="sending"
       @keydown.meta.enter.exact.prevent="send(message)"
       @keydown.ctrl.enter.exact.prevent="send(message)"
     />
@@ -38,14 +40,18 @@
   </form>
 </template>
 <script setup>
-import { askFlowChips, openFlowSession } from '@/utils/brief'
+import { askFlowChips } from '@/utils/brief'
+import { warmChatIsland } from '@/utils/chat'
 import { call, toast } from 'frappe-ui'
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   resource: { type: Object, required: true },
   team: { type: Boolean, default: false },
 })
+
+const router = useRouter()
 
 const message = ref('')
 const sending = ref(false)
@@ -78,12 +84,11 @@ async function send(text) {
   sending.value = true
   try {
     const { session } = await call('crm.api.home.ask_flow', { message: text })
-    if (openFlowSession(session)) {
-      message.value = ''
-      sending.value = false
-    }
+    await router.push({ name: 'Chat', params: { session } })
+    message.value = ''
   } catch (error) {
     toast.error(error.messages?.[0] || __('Could not start Flow'))
+  } finally {
     sending.value = false
   }
 }
